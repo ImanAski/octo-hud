@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <functional>
 #include <vector>
+#include "Time.h"
+
 namespace pico_hud {
 struct Task {
   uint32_t id;
@@ -14,7 +16,7 @@ struct Task {
   bool enabled;
 
   Task(uint32_t id, std::function<void()> func, uint32_t interval)
-      : id(id), func(func), interval_ms(interval) {}
+      : id(id), func(func), interval_ms(interval), last_run_ms(0), enabled(true) {}
 };
 
 class Scheduler {
@@ -53,10 +55,13 @@ public:
   }
 
   void run() {
+    uint32_t current_ms = Time::millis();
     for (auto &task : tasks) {
       if (task.enabled) {
-        task.func();
-        // task.last_run_ms =
+        if (current_ms - task.last_run_ms >= task.interval_ms) {
+          task.func();
+          task.last_run_ms = current_ms;
+        }
       }
     }
   }

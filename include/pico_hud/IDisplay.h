@@ -1,5 +1,6 @@
 #pragma once
 #include "Color.h"
+#include "Font.h"
 #include <cstdint>
 
 namespace pico_hud {
@@ -23,9 +24,13 @@ public:
   virtual void fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
                         Color color) = 0;
 
-  // Text Renderring
+  // Text Rendering
   virtual void drawText(int16_t x, int16_t y, const char *text, Color color,
                         Color bgColor) = 0;
+  
+  // Font-based text rendering
+  virtual void drawText(int16_t x, int16_t y, const char *text, const Font& font,
+                        Color color, Color bgColor = Colors::Black) = 0;
 
   virtual void flush() = 0;
 };

@@ -12,6 +12,7 @@ struct SensorReading {
 };
 
 class ISensor {
+public:
   virtual ~ISensor() = default;
 
   /*
